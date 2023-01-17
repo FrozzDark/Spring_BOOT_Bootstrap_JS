@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>User's information page</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row bg-dark text-white">
+        <div class="col-md-6">
+            <h5 class="pt-2 text-white">
+                <span th:text="${currentUser.getUsername()}">admin</span>
+                with roles:
+                <th:block th:each="role : ${currentUser.getRoles()}">
+                    <span th:if="(${role.getName()} == 'ROLE_ADMIN')" th:utext="ADMIN">ADMIN</span>
+                    <span th:if="(${role.getName()} == 'ROLE_USER')" th:utext="USER">USER</span>
+                </th:block>
+            </h5>
+        </div>
+        <div class="col-md-6 text-right pt-2">
+            <p><a th:href="@{/logout}" class="text-muted">
+                Logout
+            </a></p>
+        </div>
+    </div>
+
+    <div class="row min-vh-100">
+        <div class="col-1 p-0">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true">User</a>
+            </div>
+        </div>
+        <div class="col-11 bg-light">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel"
+                     aria-labelledby="v-pills-user-tab">
+                    <p>
+                    <h1>User information page</h1>
+                    <p>
+                    <div class="col border card-header" style="background-color: #e9ecef">
+                        <p>
+                        <h4>About User</h4>
+                        <p>
+                    </div>
+                    <div class="table-responsive bg-white">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">Role</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<script>
+    fetch('/api/users').then(
+        res => {
+            res.json().then(
+                data => {
+                    console.log(data)
+                    let temp = "";
+                    temp += "<td>" + data.id + "</td>";
+                    temp += "<td>" + data.username + "</td>";
+                    temp += "<td>" + data.name + "</td>";
+                    temp += "<td>" + data.surname + "</td>";
+                    temp += "<td>" + data.age + "</td>";
+                    temp += "<td>" + data.email + "</td>";
+                    temp += "<td>";
+                    let rolesStr = "";
+                    data.roles.forEach(r => {
+                        rolesStr += r.name.replaceAll("ROLE_", "") + " ";
+                    })
+                    temp += rolesStr + "</td>";
+                    document.getElementById("tbody").innerHTML = temp;
+                }
+            )
+        })
+</script>
+<!--<script type="application/javascript" src="/userPage.js"></script>-->
+</body>
+</html>
