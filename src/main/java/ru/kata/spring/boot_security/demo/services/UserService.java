@@ -76,7 +76,6 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void update(User updatedUser, long id) {
         updatedUser.setId(id);
-        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")

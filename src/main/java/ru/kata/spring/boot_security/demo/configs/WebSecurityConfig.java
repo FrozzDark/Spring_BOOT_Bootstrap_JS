@@ -63,10 +63,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationProvider.setUserDetailsService(userService);
         return authenticationProvider;
     }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**", "/static/**",
-                "/vendors/**", "/css/**", "/js/**", "/images/**", "/webjars/**");
-    }
 }
